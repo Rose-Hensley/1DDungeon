@@ -7,17 +7,19 @@ from include import color
 if TYPE_CHECKING:
     from engine import Engine
     from entity import Entity
+    
 
 class Action:
-    def __init__(self, entity: Entity, engine: Engine) -> None:
-        super().__init__()
+    # Static engine variable that all action objects will share
+    engine: Engine
+
+    def __init__(self, entity: Entity) -> None:
         self.entity = entity
-        self.engine = engine
 
     def perform(self) -> None:
         """Perform this action with the objects needed to determine its scope.
 
-        `self.engine` is the scope this action is being performed in.
+        `Action.engine` is the scope this action is being performed in.
 
         `self.entity` is the object performing the action.
 
@@ -33,28 +35,28 @@ class EscapeAction(Action):
 
 
 class MovementAction(Action):
-    def __init__(self, entity: Entity, engine: Enginge, dx: int, dy: int = 0):
-        super().__init__(entity, engine)
+    def __init__(self, entity: Entity, dx: int, dy: int = 0):
+        super().__init__(entity)
         self.dx = dx
         self.dy = dy
 
     def perform(self) -> None:
-        if not self.engine.gamemap.inbounds(self.entity.x + self.dx, self.entity.y + self.dy):
+        if not Action.engine.gamemap.inbounds(self.entity.x + self.dx, self.entity.y + self.dy):
             print('You walk into a wall')
-        elif self.engine.gamemap.block_at(self.entity.x + self.dx, self.entity.y + self.dy):
+        elif Action.engine.gamemap.block_at(self.entity.x + self.dx, self.entity.y + self.dy):
             print('Something blocks your path!')
         else:
             self.entity.move(self.dx, self.dy)
-            print('Move')
+            #print('Move')
 
 class WaitAction(Action):
     def perform(self) -> None:
-        print('Wait')
+        print(f'{self.entity.name} waits')
         pass
 
 class BasicAttackAction(Action):
     def perform(self) -> None:
-        target = self.engine.gamemap.get_adjacent_hostile(x=self.entity.x, y=self.entity.y)
+        target = Action.engine.gamemap.get_adjacent_hostile(x=self.entity.x, y=self.entity.y)
         if target == None:
             print('No enemies in range!')
         else:
@@ -63,5 +65,15 @@ class BasicAttackAction(Action):
             print(f'{self.entity.name} attacks {display_name} for {dmg}')
 
 class DieAction(Action):
+    def perform(self) -> None:
+        if self.entity == Action.engine.player:
+            Action.engine.game_over_state()
+        else:
+            msg = Action.engine.player.gain_xp(xp=self.entity.fighter.xp)
+            if msg != None:
+                print(msg)
+
+# Action that occurs at the end of every entities turn
+class EndOfTurnAction(Action):
     def perform(self) -> None:
         pass

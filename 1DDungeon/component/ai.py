@@ -19,14 +19,14 @@ class SimpleMeleeHostileEnemy(BaseAI):
     def perform(self, engine: Engine) -> None:
         # if we are next to a hostile
         if engine.gamemap.get_adjacent_hostile(x=self.actor.x, y=self.actor.y) != None:
-            BasicAttackAction(self.actor, engine).perform()
+            BasicAttackAction(entity=self.actor).perform()
 
         # pathfind to player
         elif engine.player.x > self.actor.x:
-            MovementAction(self.actor, engine, dx=1).perform()
+            MovementAction(entity=self.actor, dx=1).perform()
 
         elif engine.player.x < self.actor.x:
-            MovementAction(self.actor, engine, dx=-1).perform()
+            MovementAction(entity=self.actor, dx=-1).perform()
 
         else:
-            WaitAction(self.actor, engine).perform()
+            WaitAction(entity=self.actor).perform()

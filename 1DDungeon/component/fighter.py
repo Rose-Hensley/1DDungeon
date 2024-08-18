@@ -4,6 +4,8 @@ from typing import TYPE_CHECKING
 
 import random
 
+from include import constants
+
 if TYPE_CHECKING:
     from entity import Actor
 
@@ -18,7 +20,7 @@ class Fighter:
         xp: int = 0, xp_to_next: int = 0,
         armor: int = 0, evasion: int = 0,
         hp_regen: int = 0, mp_regen: int = 0,
-        basic_dmg: int = 0,
+        basic_dmg: int = 0, level: int = 1,
     ):
         self.hp = hp_max if hp == None else hp
         self.hp_max = hp_max
@@ -51,3 +53,17 @@ class Fighter:
             return other_actor.fighter.take_dmg(random.randint(1,self.basic_dmg) + random.randint(1,self.basic_dmg))
         else:
             return other_actor.fighter.take_dmg(self.basic_dmg * 2)
+
+    # returns a message about you leveling up or None if no level up happened
+    def gain_xp(self, xp:int) -> str | None:
+        self.xp += xp
+        if self.xp >= self.xp_to_next:
+            self.xp -= self.xp_to_next
+            return self.level_up()
+        else:
+            return None
+
+    # returns a message about you leveling up or None if no level up happened
+    def level_up(self) -> str | None:
+        self.xp_to_next += constants.xp_to_next_increment
+        return f'{self.actor.name} levels up!'

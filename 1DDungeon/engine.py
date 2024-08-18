@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Iterable, Iterator, Optional, TYPE_CHECKING
 import copy
 
+from action import Action
 from event_handler import EventHandler, MainGameHandler, GameOverHandler
 from component import entity
 from tcod.console import Console
@@ -23,11 +24,15 @@ class Engine:
             player=self.player
         )
 
-        entity_factory.zombie.spawn(gamemap=self.gamemap, x=6, y=0)
-        entity_factory.zombie.spawn(gamemap=self.gamemap, x=8, y=0)
+    def engine_init(self):
+        # Setting action engine to this
+        Action.engine = self
 
         # starting the render list
         self.renderer_list.append(GameRenderer(self.gamemap))
+
+        entity_factory.zombie.spawn(gamemap=self.gamemap, x=6, y=0)
+        entity_factory.zombie.spawn(gamemap=self.gamemap, x=8, y=0)
 
     def render(self, console: Console) -> None:
         for renderer in self.renderer_list:
@@ -37,3 +42,6 @@ class Engine:
         for entity in set(self.gamemap.actors) - {self.player}:
             if entity.ai:
                 entity.ai.perform(self)
+
+    def game_over_state(self) -> None:
+        self.event_handler = GameOverHandler(engine=self)

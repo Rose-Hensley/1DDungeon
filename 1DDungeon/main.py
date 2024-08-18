@@ -9,6 +9,7 @@ def main():
     tileset = tcod.tileset.load_tilesheet("./assets/tileset.png", 16, 16, tcod.tileset.CHARMAP_CP437)
 
     engine = Engine()
+    engine.engine_init()
 
     with tcod.context.new_terminal(
             constants.screen_width,

@@ -20,7 +20,7 @@ player = Actor(
         hp_max=30, mp_max=10,
         armor=1, evasion=10,
         hp_regen=1, mp_regen=1,
-        basic_dmg=4,
+        basic_dmg=4, xp_to_next=2,
     )
 )
 

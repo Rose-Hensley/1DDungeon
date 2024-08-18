@@ -42,5 +42,9 @@ class Actor(Entity):
         self.char = "%"
         self.blocks_movement = False
         self.ai = None
-        self.name = f"remains of {self.name}"
-        
+        self.name = f"{self.name} (dead)"
+        DieAction(self).perform()
+
+    # returns a message about you leveling up or None if no level up happened
+    def gain_xp(self, xp:int) -> str | None:
+        return self.fighter.gain_xp(xp=xp)

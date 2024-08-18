@@ -4,11 +4,11 @@ from typing import Optional, TYPE_CHECKING
 
 import tcod.event
 from tcod import context
-
 from action import *
 
 if TYPE_CHECKING:
     from engine import Engine
+    
 
 MOVE_KEYS = {
     tcod.event.KeySym.LEFT: -1,
@@ -67,16 +67,16 @@ class MainGameHandler(EventHandler):
         player = self.engine.player
 
         if key in MOVE_KEYS:
-            action = MovementAction(player, self.engine, MOVE_KEYS[key])
+            action = MovementAction(entity=player, dx=MOVE_KEYS[key])
 
         elif key in QUIT_KEYS:
-            action = EscapeAction(player, self.engine)
+           action = EscapeAction(entity=player)
 
         elif key in WAIT_KEYS:
-            action = WaitAction(player, self.engine)
+            action = WaitAction(entity=player)
 
         elif key in ATTACK_KEYS:
-            action = BasicAttackAction(player, self.engine)
+            action = BasicAttackAction(entity=player)
 
         # No valid key was pressed
         return action
@@ -90,7 +90,7 @@ class GameOverHandler(EventHandler):
         player = self.engine.player
 
         if key in QUIT_KEYS:
-            action = EscapeAction(player, self.engine)
+            action = EscapeAction(entity=player)
 
         # No valid key was pressed
         return action
