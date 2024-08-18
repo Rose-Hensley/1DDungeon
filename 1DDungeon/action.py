@@ -47,12 +47,15 @@ class MovementAction(Action):
             print('Something blocks your path!')
         else:
             self.entity.move(self.dx, self.dy)
-            #print('Move')
+
+        EndTurnAction(self.entity).perform()
+
 
 class WaitAction(Action):
     def perform(self) -> None:
         print(f'{self.entity.name} waits')
-        pass
+        EndTurnAction(self.entity).perform()
+
 
 class BasicAttackAction(Action):
     def perform(self) -> None:
@@ -64,6 +67,9 @@ class BasicAttackAction(Action):
             dmg = self.entity.fighter.basic_attack(target)
             print(f'{self.entity.name} attacks {display_name} for {dmg}')
 
+        EndTurnAction(self.entity).perform()
+
+
 class DieAction(Action):
     def perform(self) -> None:
         if self.entity == Action.engine.player:
@@ -72,3 +78,8 @@ class DieAction(Action):
             msg = Action.engine.player.gain_xp(xp=self.entity.fighter.xp)
             if msg != None:
                 print(msg)
+
+
+class EndTurnAction(Action):
+    def perform(self) -> None:
+        self.entity.fighter.on_end_of_turn()

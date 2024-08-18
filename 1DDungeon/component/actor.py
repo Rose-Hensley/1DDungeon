@@ -6,6 +6,7 @@ from component.ai import BaseAI
 from component.fighter import Fighter
 from component.entity import *
 from action import DieAction
+from render_order import RenderOrder
 
 class Actor(Entity):
     def __init__(
@@ -33,6 +34,7 @@ class Actor(Entity):
         self.fighter = fighter
         self.fighter.actor = self
         self.hostile = hostile
+        self.render_order = RenderOrder.ACTOR
 
     def is_alive(self) -> bool:
         return self.fighter.hp > 0
@@ -43,6 +45,7 @@ class Actor(Entity):
         self.blocks_movement = False
         self.ai = None
         self.name = f"{self.name} (dead)"
+        self.render_order = RenderOrder.CORPSE
         DieAction(self).perform()
 
     # returns a message about you leveling up or None if no level up happened

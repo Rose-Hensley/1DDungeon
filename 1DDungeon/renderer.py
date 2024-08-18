@@ -72,6 +72,7 @@ class GameRenderer(Renderer):
 
         
         # drawing entities to the game map
+        self.gamemap.entities = sorted(self.gamemap.entities, key=lambda x: x.render_order.value)
         for entity in self.gamemap.entities:
             console.print(
                 x=entity.x + game_map_x+1, y=entity.y + game_map_y+2,

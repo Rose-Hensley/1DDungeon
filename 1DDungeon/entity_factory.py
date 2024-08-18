@@ -22,7 +22,7 @@ player = Actor(
         hp_regen=1, mp_regen=1,
         basic_dmg=4, xp_to_next=2,
         bulk=3,cunning=4,magic=5,luck=4
-    )
+    ),
 )
 
 zombie = Actor(

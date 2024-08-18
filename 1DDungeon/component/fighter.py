@@ -59,6 +59,26 @@ class Fighter:
         else:
             return other_actor.fighter.take_dmg(self.basic_dmg * 2)
 
+    # returns the actual amount of hp gained
+    def gain_hp(self, hp: int) -> int:
+        if self.hp + hp > self.hp_max:
+            ret = self.hp + hp - self.hp_max
+            self.hp = self.hp_max
+            return ret
+        else:
+            self.hp += hp
+            return hp
+
+    # returns the actual amount of mp gained
+    def gain_mp(self, mp:int) -> int:
+        if self.mp + mp > self.mp_max:
+            ret = self.mp + mp - self.mp_max
+            self.mp = self.mp_max
+            return ret
+        else:
+            self.mp += mp
+            return mp
+
     # returns a message about you leveling up or None if no level up happened
     def gain_xp(self, xp:int) -> str | None:
         self.xp += xp
@@ -72,3 +92,8 @@ class Fighter:
     def level_up(self) -> str | None:
         self.xp_to_next += constants.xp_to_next_increment
         return f'{self.actor.name} levels up!'
+
+    def on_end_of_turn(self) -> None:
+        if self.actor.is_alive():
+            self.gain_hp(hp=self.hp_regen)
+            self.gain_mp(mp=self.mp_regen)

@@ -31,7 +31,7 @@ class GameMap:
     @property
     def actors(self) -> Iterator[Actor]:
         """Iterate over this maps living actors."""
-        yield from (entity for entity in self.entities if entity.is_alive)
+        yield from (entity for entity in self.entities if entity.is_alive())
 
     def get_actor_at_location(self, x: int, y: int = 0) -> Optional[Actor]:
         for actor in self.actors:
