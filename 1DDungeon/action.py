@@ -72,8 +72,3 @@ class DieAction(Action):
             msg = Action.engine.player.gain_xp(xp=self.entity.fighter.xp)
             if msg != None:
                 print(msg)
-
-# Action that occurs at the end of every entities turn
-class EndOfTurnAction(Action):
-    def perform(self) -> None:
-        pass

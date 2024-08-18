@@ -56,6 +56,7 @@ class GameRenderer(Renderer):
         self.gamemap = gamemap
 
     def render(self, console: Console) -> None:
+        player_fighter = self.gamemap.player.fighter
         # finding the origin for border title
         game_map_x = constants.screen_width//2 - self.gamemap.width//2
         game_map_y = (constants.screen_height * 5) // 6
@@ -88,7 +89,7 @@ class GameRenderer(Renderer):
 
         # drawing hp bar
         self.render_bar(console=console, x=sheet_x+1,y=sheet_y+1,
-            curr_value=self.gamemap.player.fighter.hp, max_value=self.gamemap.player.fighter.hp_max,
+            curr_value=self.gamemap.player.fighter.hp, max_value=player_fighter.hp_max,
             total_width=constants.screen_width//2 - 4,
             bar_fill=color.hp_bar_fill, bar_empty=color.hp_bar_empty, string='HP'
         )
@@ -112,10 +113,9 @@ class GameRenderer(Renderer):
         # drawing list of menus to navigate to
         console.print_rect(x=sheet_x+1,y=sheet_y+7,
             width=sheet_width, height=sheet_height,
-            string="""AC:15 EV:25
-Str:12 Dex:8 Mag:21
-f - Bop
+            string=f"""Blk:{player_fighter.bulk} Cun:{player_fighter.cunning} Mag:{player_fighter.magic} Lck:{player_fighter.luck}
+AC:{player_fighter.armor} EV:{player_fighter.evasion}
+f - Basic Attack (2d{player_fighter.basic_dmg})
 h - controls
 esc - pause
-
             """)

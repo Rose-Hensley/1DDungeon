@@ -19,6 +19,7 @@ class Fighter:
         mp_max: int = 0, mp: int | None = None, 
         xp: int = 0, xp_to_next: int = 0,
         armor: int = 0, evasion: int = 0,
+        bulk: int = 0, cunning: int = 0, magic: int = 0, luck: int = 0,
         hp_regen: int = 0, mp_regen: int = 0,
         basic_dmg: int = 0, level: int = 1,
     ):
@@ -33,6 +34,10 @@ class Fighter:
         self.hp_regen = hp_regen
         self.mp_regen = mp_regen
         self.basic_dmg = basic_dmg
+        self.bulk = bulk
+        self.cunning = cunning
+        self.magic = magic
+        self.luck = luck
 
     # returns the actual amount of damage taken
     def take_dmg(self, dmg: int) -> int:
