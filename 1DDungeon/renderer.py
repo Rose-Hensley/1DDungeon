@@ -83,7 +83,7 @@ class GameRenderer(Renderer):
         sheet_x, sheet_y = self.render_border(console=console,
             x=0, y=0,
             width=constants.screen_width//2, height=game_map_y-2,
-            bg=color.character_sheet_border, title='Marisa the Witch'
+            bg=color.character_sheet_border, title=self.gamemap.player.name
         )
 
         # drawing hp bar

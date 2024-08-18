@@ -5,6 +5,7 @@ from typing import Optional, Tuple, Type, TypeVar, TYPE_CHECKING
 from component.ai import BaseAI
 from component.fighter import Fighter
 from component.entity import *
+from action import DieAction
 
 class Actor(Entity):
     def __init__(
@@ -42,3 +43,4 @@ class Actor(Entity):
         self.blocks_movement = False
         self.ai = None
         self.name = f"remains of {self.name}"
+        

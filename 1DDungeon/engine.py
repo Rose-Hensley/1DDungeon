@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Iterable, Iterator, Optional, TYPE_CHECKING
 import copy
 
-from event_handler import EventHandler
+from event_handler import EventHandler, MainGameHandler, GameOverHandler
 from component import entity
 from tcod.console import Console
 from renderer import GameRenderer
@@ -13,7 +13,7 @@ import entity_factory
 
 class Engine:
     def __init__(self):
-        self.event_handler: EventHandler = EventHandler(self)
+        self.event_handler: EventHandler = MainGameHandler(self)
         self.renderer_list = []
         self.player = copy.deepcopy(entity_factory.player)
         self.gamemap = GameMap(
@@ -24,6 +24,7 @@ class Engine:
         )
 
         entity_factory.zombie.spawn(gamemap=self.gamemap, x=6, y=0)
+        entity_factory.zombie.spawn(gamemap=self.gamemap, x=8, y=0)
 
         # starting the render list
         self.renderer_list.append(GameRenderer(self.gamemap))

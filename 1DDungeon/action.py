@@ -61,3 +61,7 @@ class BasicAttackAction(Action):
             display_name = target.name
             dmg = self.entity.fighter.basic_attack(target)
             print(f'{self.entity.name} attacks {display_name} for {dmg}')
+
+class DieAction(Action):
+    def perform(self) -> None:
+        pass
