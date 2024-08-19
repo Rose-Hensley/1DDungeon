@@ -1,4 +1,4 @@
-screen_width = 72
+screen_width = 96
 screen_height = 48
 
 gamemap_width = 15

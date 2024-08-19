@@ -4,7 +4,7 @@ black = (0, 0, 0)
 terminal_fg = (230,155,25)
 terminal_bg = (30,20,15)
 
-player_glyph = (135, 25, 255)
+player_glyph = (25, 255, 100)
 hostile_glyph = (255, 10, 10)
 
 hp_bar_fill = (0, 150, 0)

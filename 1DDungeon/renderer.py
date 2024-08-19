@@ -5,6 +5,7 @@ from tcod.console import Console
 from gamemap import GameMap
 from include import constants
 from include import color
+from component.entity import Entity
 
 class Renderer:
     def render(self, console: Console) -> None:
@@ -57,6 +58,7 @@ class GameRenderer(Renderer):
 
     def render(self, console: Console) -> None:
         player_fighter = self.gamemap.player.fighter
+
         # finding the origin for border title
         game_map_x = constants.screen_width//2 - self.gamemap.width//2
         game_map_y = (constants.screen_height * 5) // 6
@@ -70,7 +72,13 @@ class GameRenderer(Renderer):
             title='Floor 1', title_color=color.white
         )
 
-        
+        # drawing targeted tiles
+        for target_entity in self.gamemap.target_entities:
+            console.print(
+                x=game_map_x + target_entity.x + 1, y=game_map_y+self.gamemap.height+3,
+                string='^', fg=color.white,
+            )
+
         # drawing entities to the game map
         self.gamemap.entities = sorted(self.gamemap.entities, key=lambda x: x.render_order.value)
         for entity in self.gamemap.entities:
@@ -84,39 +92,81 @@ class GameRenderer(Renderer):
         sheet_width, sheet_height = constants.screen_width//2 - 2, game_map_y-2
         sheet_x, sheet_y = self.render_border(console=console,
             x=0, y=0,
-            width=constants.screen_width//2, height=game_map_y-2,
+            width=sheet_width, height=sheet_height,
             bg=color.character_sheet_border, title=self.gamemap.player.name
         )
 
         # drawing hp bar
         self.render_bar(console=console, x=sheet_x+1,y=sheet_y+1,
-            curr_value=self.gamemap.player.fighter.hp, max_value=player_fighter.hp_max,
-            total_width=constants.screen_width//2 - 4,
+            curr_value=player_fighter.hp, max_value=player_fighter.hp_max,
+            total_width=sheet_width - 4,
             bar_fill=color.hp_bar_fill, bar_empty=color.hp_bar_empty, string='HP'
         )
 
         # drawing mp bar
         self.render_bar(console=console,
-            curr_value=self.gamemap.player.fighter.mp, max_value=self.gamemap.player.fighter.mp_max,
-            total_width=constants.screen_width//2 - 4,
+            curr_value=player_fighter.mp, max_value=player_fighter.mp_max,
+            total_width=sheet_width - 4,
             x=sheet_x+1, y=sheet_y+3,
             bar_fill=color.mp_bar_fill, bar_empty=color.mp_bar_empty,string='MP'
         )
 
         # drawing xp bar
         self.render_bar(console=console,
-            curr_value=self.gamemap.player.fighter.xp, max_value=self.gamemap.player.fighter.xp_to_next,
-            total_width=constants.screen_width//2 - 4,
+            curr_value=player_fighter.xp, max_value=player_fighter.xp_to_next,
+            total_width=sheet_width - 4,
             x=sheet_x+1, y=sheet_y+5,
             bar_fill=color.xp_bar_fill, bar_empty=color.xp_bar_empty, string='XP'
         )
 
         # drawing list of menus to navigate to
-        console.print_rect(x=sheet_x+1,y=sheet_y+7,
+        console.print_box(x=sheet_x+1,y=sheet_y+7,
             width=sheet_width, height=sheet_height,
-            string=f"""Blk:{player_fighter.bulk} Cun:{player_fighter.cunning} Mag:{player_fighter.magic} Lck:{player_fighter.luck}
+            string=f"""Blk:{player_fighter.bulk}  Cun:{player_fighter.cunning}  Mag:{player_fighter.magic}  Lck:{player_fighter.luck}
+
 AC:{player_fighter.armor} EV:{player_fighter.evasion}
+
 f - Basic Attack (2d{player_fighter.basic_dmg})
+
 h - controls
+
 esc - pause
             """)
+
+
+        self.render_enemy_character_sheet(
+            console=console, 
+            entity=next((enemy for enemy in self.gamemap.actors if enemy.hostile), None),
+            sheet_width=sheet_width, sheet_height=sheet_height,
+        )
+
+    def render_enemy_character_sheet(self, console: Console, entity: Entity, sheet_width: int, sheet_height: int):
+        if entity != None and entity.is_alive():
+            entity_fighter = entity.fighter
+            sheet_x, sheet_y = self.render_border(console=console,
+                x=constants.screen_width//2 + 1, y=0,
+                width=sheet_width, height=sheet_height,
+                bg=entity.color, title=entity.name
+            )
+
+            # drawing hp bar
+            self.render_bar(console=console, x=sheet_x+1,y=sheet_y+1,
+                curr_value=entity_fighter.hp, max_value=entity_fighter.hp_max,
+                total_width=sheet_width - 4,
+                bar_fill=color.hp_bar_fill, bar_empty=color.hp_bar_empty, string='HP'
+            )
+
+            # drawing mp bar
+            self.render_bar(console=console,
+                curr_value=entity_fighter.mp, max_value=entity_fighter.mp_max,
+                total_width=sheet_width - 4,
+                x=sheet_x+1, y=sheet_y+3,
+                bar_fill=color.mp_bar_fill, bar_empty=color.mp_bar_empty,string='MP'
+            )
+
+            # drawing list of menus to navigate to
+            console.print_box(x=sheet_x+1,y=sheet_y+7,
+                width=sheet_width, height=sheet_height,
+                string=f"""Blk:{entity_fighter.bulk} Cun:{entity_fighter.cunning} Mag:{entity_fighter.magic} Lck:{entity_fighter.luck}
+AC:{entity_fighter.armor} EV:{entity_fighter.evasion}
+Basic Attack (2d{entity_fighter.basic_dmg})""")

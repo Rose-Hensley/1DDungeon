@@ -29,6 +29,10 @@ ATTACK_KEYS = [
     tcod.event.KeySym.f,
 ]
 
+SWITCH_TARGET_KEYS = [
+    tcod.event.KeySym.TAB
+]
+
 
 class EventHandler(tcod.event.EventDispatch[Action]):
     def __init__(self, engine: Engine):
@@ -57,8 +61,8 @@ class MainGameHandler(EventHandler):
             if action is None:
                 continue
             action.perform()
-
-            self.engine.handle_enemy_turns()
+            if action.gives_up_turn():
+                self.engine.handle_enemy_turns()
 
     def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[Action]:
         action: Optional[Action] = None
@@ -77,6 +81,9 @@ class MainGameHandler(EventHandler):
 
         elif key in ATTACK_KEYS:
             action = BasicAttackAction(entity=player)
+
+        elif key in SWITCH_TARGET_KEYS:
+            action = SwitchTargetAction(entity=player)
 
         # No valid key was pressed
         return action

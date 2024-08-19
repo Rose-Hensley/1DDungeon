@@ -16,6 +16,9 @@ class Action:
     def __init__(self, entity: Entity) -> None:
         self.entity = entity
 
+    def gives_up_turn(self) -> bool:
+        return True
+
     def perform(self) -> None:
         """Perform this action with the objects needed to determine its scope.
 
@@ -57,19 +60,6 @@ class WaitAction(Action):
         EndTurnAction(self.entity).perform()
 
 
-class BasicAttackAction(Action):
-    def perform(self) -> None:
-        target = Action.engine.gamemap.get_adjacent_hostile(x=self.entity.x, y=self.entity.y)
-        if target == None:
-            print('No enemies in range!')
-        else:
-            display_name = target.name
-            dmg = self.entity.fighter.basic_attack(target)
-            print(f'{self.entity.name} attacks {display_name} for {dmg}')
-
-        EndTurnAction(self.entity).perform()
-
-
 class DieAction(Action):
     def perform(self) -> None:
         if self.entity == Action.engine.player:
@@ -83,3 +73,28 @@ class DieAction(Action):
 class EndTurnAction(Action):
     def perform(self) -> None:
         self.entity.fighter.on_end_of_turn()
+
+
+class SwitchTargetAction(Action):
+    def gives_up_turn(self) -> bool:
+        return False
+
+    def perform(self) -> None:
+        other_entity = next((enemy for enemy in Action.engine.gamemap.actors if enemy.hostile and \
+            enemy not in Action.engine.gamemap.target_entities), None)
+        Action.engine.gamemap.target_entities.clear()
+        if other_entity != None:
+            Action.engine.gamemap.target_entities.append(other_entity)
+
+
+class BasicAttackAction(Action):
+    def perform(self) -> None:
+        target = Action.engine.gamemap.get_adjacent_hostile(x=self.entity.x, y=self.entity.y)
+        if target == None:
+            print('No enemies in range!')
+        else:
+            display_name = target.name
+            dmg = self.entity.fighter.basic_attack(target)
+            print(f'{self.entity.name} attacks {display_name} for {dmg}')
+
+        EndTurnAction(self.entity).perform()

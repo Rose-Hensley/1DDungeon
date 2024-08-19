@@ -2,11 +2,16 @@ from __future__ import annotations
 
 from typing import Iterable, Iterator, Optional, TYPE_CHECKING
 
+if TYPE_CHECKING:
+    from component.entity import Entity
+
 class GameMap:
-    def __init__(self, player: Actor, width: int, height: int = 1, entities: Iterable[Entity] = ()):
+    def __init__(self, player: Actor, width: int, height: int = 1,
+        entities: Iterable[Entity] = (), target_tiles: list[Entity] = []):
         self._width, self._height = width, height
         self.entities = set(entities)
         self.player = player
+        self.target_entities = []
 
     @property
     def width(self):
@@ -15,6 +20,9 @@ class GameMap:
     @property
     def height(self):
         return self._height
+
+    def generate_floor(self):
+        pass
 
     # returns whether the given space is in bounds or not
     def inbounds(self, x: int, y: int) -> bool:
