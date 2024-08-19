@@ -61,6 +61,9 @@ class MainGameHandler(EventHandler):
             if action is None:
                 continue
             action.perform()
+
+            print(self.engine.gamemap.target_entities)
+
             if action.gives_up_turn():
                 self.engine.handle_enemy_turns()
 

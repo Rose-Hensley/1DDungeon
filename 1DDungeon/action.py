@@ -32,6 +32,9 @@ class Action:
 
 
 class EscapeAction(Action):
+    def gives_up_turn(self) -> bool:
+        return False
+
     def perform(self) -> None:
         print('Goodbye World')
         raise SystemExit()
@@ -61,10 +64,19 @@ class WaitAction(Action):
 
 
 class DieAction(Action):
+    def gives_up_turn(self) -> bool:
+        return False
+
     def perform(self) -> None:
         if self.entity == Action.engine.player:
             Action.engine.game_over_state()
         else:
+            # remove from targetted entities list if need be
+            if self.entity in Action.engine.gamemap.target_entities:
+                Action.engine.gamemap.target_entities.remove(self.entity)
+                SwitchTargetAction(entity=self.entity).perform()
+
+            # gain xp
             msg = Action.engine.player.gain_xp(xp=self.entity.fighter.xp)
             if msg != None:
                 print(msg)
@@ -80,8 +92,20 @@ class SwitchTargetAction(Action):
         return False
 
     def perform(self) -> None:
-        other_entity = next((enemy for enemy in Action.engine.gamemap.actors if enemy.hostile and \
-            enemy not in Action.engine.gamemap.target_entities), None)
+        other_entities = sorted(Action.engine.gamemap.actors, key=lambda actor: actor.x)
+        other_entities = list(filter(lambda actor: actor.hostile, other_entities))
+
+        if not other_entities:
+            Action.engine.gamemap.target_entities.clear()
+            return
+
+        if not Action.engine.gamemap.target_entities or Action.engine.gamemap.target_entities[0] not in other_entities:
+            other_entity = other_entities[0]
+
+        elif Action.engine.gamemap.target_entities:
+            idx = other_entities.index(Action.engine.gamemap.target_entities[0])
+            other_entity = other_entities[(idx+1) % len(other_entities)]
+
         Action.engine.gamemap.target_entities.clear()
         if other_entity != None:
             Action.engine.gamemap.target_entities.append(other_entity)

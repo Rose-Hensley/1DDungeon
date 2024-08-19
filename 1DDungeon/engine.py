@@ -31,8 +31,9 @@ class Engine:
         # starting the render list
         self.renderer_list.append(GameRenderer(self.gamemap))
 
-        entity_factory.zombie_carrier.spawn(gamemap=self.gamemap, x=9, y=0)
+        entity_factory.zombie_carrier.spawn(gamemap=self.gamemap, x=10, y=0)
         entity_factory.zombie.spawn(gamemap=self.gamemap, x=5, y=0)
+        #entity_factory.zombie.spawn(gamemap=self.gamemap, x=7, y=0)
 
     def render(self, console: Console) -> None:
         for renderer in self.renderer_list:
