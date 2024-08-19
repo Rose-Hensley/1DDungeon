@@ -127,18 +127,15 @@ class GameRenderer(Renderer):
 AC:{player_fighter.armor} EV:{player_fighter.evasion}
 
 f - Basic Attack (2d{player_fighter.basic_dmg})
-
-h - controls
-
-esc - pause
-            """)
+TAB - Switch target""")
 
 
-        self.render_enemy_character_sheet(
-            console=console, 
-            entity=next((enemy for enemy in self.gamemap.actors if enemy.hostile), None),
-            sheet_width=sheet_width, sheet_height=sheet_height,
-        )
+        if self.gamemap.target_entities:
+            self.render_enemy_character_sheet(
+                console=console, 
+                entity=self.gamemap.target_entities[0],
+                sheet_width=sheet_width, sheet_height=sheet_height,
+            )
 
     def render_enemy_character_sheet(self, console: Console, entity: Entity, sheet_width: int, sheet_height: int):
         if entity != None and entity.is_alive():

@@ -13,9 +13,9 @@ from include import color
 
 player = Actor(
     hostile=False,
-    char=get_character(12,0),
+    char='L',
     color=color.player_glyph,
-    name='Marisa',
+    name='Liana LN-47',
     ai=BaseAI(),
     fighter=PlayerFighter(
         hp_max=30, mp_max=10,
