@@ -40,6 +40,11 @@ class EscapeAction(Action):
         raise SystemExit()
 
 
+class ResetGameAction(Action):
+    def perform(self) -> None:
+        Action.engine.reset_game()
+
+
 class MovementAction(Action):
     def __init__(self, entity: Entity, dx: int, dy: int = 0):
         super().__init__(entity)
@@ -119,6 +124,6 @@ class BasicAttackAction(Action):
         else:
             display_name = target.name
             dmg = self.entity.fighter.basic_attack(target)
-            print(f'{self.entity.name} attacks {display_name} for {dmg}')
+            #print(f'{self.entity.name} attacks {display_name} for {dmg}')
 
         EndTurnAction(self.entity).perform()

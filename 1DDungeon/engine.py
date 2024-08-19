@@ -7,7 +7,7 @@ from action import Action
 from event_handler import EventHandler, MainGameHandler, GameOverHandler
 from component import entity
 from tcod.console import Console
-from renderer import GameRenderer
+from renderer import GameRenderer, GameOverRenderer
 from gamemap import GameMap
 from include import constants
 import entity_factory
@@ -33,7 +33,20 @@ class Engine:
 
         entity_factory.zombie_carrier.spawn(gamemap=self.gamemap, x=10, y=0)
         entity_factory.zombie.spawn(gamemap=self.gamemap, x=5, y=0)
-        #entity_factory.zombie.spawn(gamemap=self.gamemap, x=7, y=0)
+        entity_factory.zombie.spawn(gamemap=self.gamemap, x=7, y=0)
+
+    def reset_game(self):
+        self.renderer_list = []
+        self.event_handler = MainGameHandler(self)
+        self.player = copy.deepcopy(entity_factory.player)
+        self.gamemap = GameMap(
+            width=constants.gamemap_width,
+            height=constants.gamemap_height,
+            entities=[self.player],
+            player=self.player
+        )
+
+        self.engine_init()
 
     def render(self, console: Console) -> None:
         for renderer in self.renderer_list:
@@ -46,3 +59,4 @@ class Engine:
 
     def game_over_state(self) -> None:
         self.event_handler = GameOverHandler(engine=self)
+        self.renderer_list.append(GameOverRenderer())

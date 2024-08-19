@@ -21,6 +21,10 @@ QUIT_KEYS = [
     tcod.event.KeySym.ESCAPE,
 ]
 
+CONFIRM_KEYS = [
+    tcod.event.KeySym.RETURN,
+]
+
 WAIT_KEYS = [
     tcod.event.KeySym.s,
 ]
@@ -62,8 +66,6 @@ class MainGameHandler(EventHandler):
                 continue
             action.perform()
 
-            print(self.engine.gamemap.target_entities)
-
             if action.gives_up_turn():
                 self.engine.handle_enemy_turns()
 
@@ -101,6 +103,9 @@ class GameOverHandler(EventHandler):
 
         if key in QUIT_KEYS:
             action = EscapeAction(entity=player)
+
+        elif key in CONFIRM_KEYS:
+            action = ResetGameAction(entity=player)
 
         # No valid key was pressed
         return action

@@ -22,7 +22,7 @@ player = Actor(
         armor=1, evasion=10,
         hp_regen=1, mp_regen=1,
         basic_dmg=4, xp_to_next=2,
-        bulk=3,cunning=4,magic=5,luck=4
+        bulk=2,cunning=4,magic=5,luck=4
     ),
 )
 

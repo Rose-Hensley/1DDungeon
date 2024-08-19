@@ -122,7 +122,7 @@ class GameRenderer(Renderer):
         # drawing list of menus to navigate to
         console.print_box(x=sheet_x+1,y=sheet_y+7,
             width=sheet_width, height=sheet_height,
-            string=f"""Blk:{player_fighter.bulk}  Cun:{player_fighter.cunning}  Mag:{player_fighter.magic}  Lck:{player_fighter.luck}
+            string=f"""Bulk:{player_fighter.bulk}  Cunning:{player_fighter.cunning}  Magic:{player_fighter.magic}  Luck:{player_fighter.luck}
 
 AC:{player_fighter.armor} EV:{player_fighter.evasion}
 
@@ -167,3 +167,18 @@ TAB - Switch target""")
                 string=f"""Blk:{entity_fighter.bulk} Cun:{entity_fighter.cunning} Mag:{entity_fighter.magic} Lck:{entity_fighter.luck}
 AC:{entity_fighter.armor} EV:{entity_fighter.evasion}
 Basic Attack (2d{entity_fighter.basic_dmg})""")
+
+
+class GameOverRenderer(Renderer):
+    def render(self, console: Console) -> None:
+        width, height = 17, 7
+        dialogue_x, dialogue_y = self.render_border(console=console,
+            x=constants.screen_width//2 - 5, y=constants.screen_height//2 - 1,
+            width=width, height=height,
+            bg=color.white, title='GAME OVER'
+        )
+        console.print_box(x=dialogue_x,y=dialogue_y+1,
+            width=width, height=height,
+            string=""" ENTER - Reset
+
+ ESC - Quit""")
