@@ -34,6 +34,7 @@ class Engine:
         entity_factory.zombie_carrier.spawn(gamemap=self.gamemap, x=10, y=0)
         entity_factory.zombie.spawn(gamemap=self.gamemap, x=5, y=0)
         entity_factory.zombie.spawn(gamemap=self.gamemap, x=7, y=0)
+        self.gamemap.entities.append(entity.GoldPickup(x=3, y=0, gold_amount=15))
 
     def reset_game(self):
         self.renderer_list = []

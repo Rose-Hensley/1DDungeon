@@ -17,7 +17,7 @@ class PlayerFighter(Fighter):
         bulk: int = 0, cunning: int = 0, magic: int = 0, luck: int = 0,
         hp_regen: int = 0, mp_regen: int = 0,
         basic_dmg: int = 0, level: int = 1,
-        species: Species = Species(0)
+        species: Species = Species(0),
     ):
         super().__init__(
             hp_max=hp_max, hp=hp,

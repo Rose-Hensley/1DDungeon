@@ -68,6 +68,18 @@ class WaitAction(Action):
         EndTurnAction(self.entity).perform()
 
 
+class GrabAction(Action):
+    def gives_up_turn(self) -> bool:
+        return False
+
+    def perform(self) -> None:
+        x_pos, y_pos = self.entity.x, self.entity.y
+        for grabbable_entity in Action.engine.gamemap.entities:
+            if grabbable_entity.is_grabbable() and grabbable_entity.x == x_pos and grabbable_entity.y == y_pos:
+                grabbable_entity.pickup(self.entity.fighter)
+                Action.engine.gamemap.entities.remove(grabbable_entity)
+
+
 class DieAction(Action):
     def gives_up_turn(self) -> bool:
         return False

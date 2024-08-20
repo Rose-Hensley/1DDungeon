@@ -25,6 +25,10 @@ CONFIRM_KEYS = [
     tcod.event.KeySym.RETURN,
 ]
 
+GRAB_KEYS = [
+    tcod.event.KeySym.g,
+]
+
 WAIT_KEYS = [
     tcod.event.KeySym.s,
 ]
@@ -89,6 +93,9 @@ class MainGameHandler(EventHandler):
 
         elif key in SWITCH_TARGET_KEYS:
             action = SwitchTargetAction(entity=player)
+
+        elif key in GRAB_KEYS:
+            action = GrabAction(entity=player)
 
         # No valid key was pressed
         return action

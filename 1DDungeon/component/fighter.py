@@ -19,7 +19,8 @@ class Fighter:
         armor: int = 0, evasion: int = 0,
         bulk: int = 0, cunning: int = 0, magic: int = 0, luck: int = 0,
         hp_regen: int = 0, mp_regen: int = 0,
-        basic_dmg: int = 0,
+        basic_dmg: int = 0, 
+        gold: int = 0
     ):
         self.hp = hp_max if hp == None else hp
         self.hp_max = hp_max
@@ -35,6 +36,7 @@ class Fighter:
         self.cunning = cunning
         self.magic = magic
         self.luck = luck
+        self.gold = gold
 
     # returns the actual amount of damage taken
     def take_dmg(self, dmg: int) -> int:

@@ -126,6 +126,8 @@ class GameRenderer(Renderer):
 
 AC:{player_fighter.armor} EV:{player_fighter.evasion}
 
+Gold:{player_fighter.gold}
+
 f - Basic Attack (2d{player_fighter.basic_dmg})
 TAB - Switch target""")
 

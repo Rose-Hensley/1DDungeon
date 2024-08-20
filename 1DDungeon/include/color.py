@@ -22,6 +22,8 @@ rare = (101, 101, 216)
 very_rare = (150, 22, 255)
 legendary = (255, 166, 95)
 
+gold = (212, 175, 55)
+
 gamemap_border = white
 character_sheet_border = player_glyph
 

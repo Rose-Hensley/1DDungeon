@@ -7,9 +7,9 @@ if TYPE_CHECKING:
 
 class GameMap:
     def __init__(self, player: Actor, width: int, height: int = 1,
-        entities: Iterable[Entity] = (), target_tiles: list[Entity] = []):
+        entities: Iterable[Entity] = [], target_tiles: list[Entity] = []):
         self._width, self._height = width, height
-        self.entities = set(entities)
+        self.entities = entities
         self.player = player
         self.target_entities = []
 
