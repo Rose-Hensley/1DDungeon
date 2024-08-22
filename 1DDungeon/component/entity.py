@@ -4,7 +4,7 @@ import copy
 
 from typing import Optional, Tuple, Type, TypeVar, TYPE_CHECKING
 
-from render_order import RenderOrder
+from include.render_order import RenderOrder
 from include import color
 
 if TYPE_CHECKING:
@@ -23,7 +23,7 @@ class Entity:
         color: Tuple[int, int, int] = color.white,
         name: str = "<Unnamed>",
         blocks_movement: bool = False,
-        render_order: RenderOrder = RenderOrder.CORPSE
+        render_order: RenderOrder = RenderOrder.CORPSE,
     ):
         self.x = x
         self.y = y

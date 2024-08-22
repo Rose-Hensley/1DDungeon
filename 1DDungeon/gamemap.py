@@ -6,8 +6,13 @@ if TYPE_CHECKING:
     from component.entity import Entity
 
 class GameMap:
-    def __init__(self, player: Actor, width: int, height: int = 1,
-        entities: Iterable[Entity] = [], target_tiles: list[Entity] = []):
+    def __init__(self,
+        player: Actor,
+        width: int,
+        height: int = 1,
+        entities: Iterable[Entity] = [],
+        target_tiles: list[Entity] = [],
+    ):
         self._width, self._height = width, height
         self.entities = entities
         self.player = player

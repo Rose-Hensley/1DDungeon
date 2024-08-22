@@ -17,10 +17,10 @@ class Fighter:
         mp_max: int = 0, mp: int | None = None, 
         xp: int = 0,
         armor: int = 0, evasion: int = 0,
-        bulk: int = 0, cunning: int = 0, magic: int = 0, luck: int = 0,
+        bulk: int = 0, nimble: int = 0, magic: int = 0, luck: int = 0,
         hp_regen: int = 0, mp_regen: int = 0,
         basic_dmg: int = 0, 
-        gold: int = 0
+        gold: int = 0,
     ):
         self.hp = hp_max if hp == None else hp
         self.hp_max = hp_max
@@ -33,7 +33,7 @@ class Fighter:
         self.mp_regen = mp_regen
         self.basic_dmg = basic_dmg
         self.bulk = bulk
-        self.cunning = cunning
+        self.nimble = nimble
         self.magic = magic
         self.luck = luck
         self.gold = gold

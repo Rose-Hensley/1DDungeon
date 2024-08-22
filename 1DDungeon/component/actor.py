@@ -6,7 +6,7 @@ from component.ai import BaseAI
 from component.fighter import Fighter
 from component.entity import *
 from action import DieAction
-from render_order import RenderOrder
+from include.render_order import RenderOrder
 
 class Actor(Entity):
     def __init__(

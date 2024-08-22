@@ -4,6 +4,8 @@ from typing import Optional, Tuple, TYPE_CHECKING
 
 from include import color
 
+from component.inventory_item import WeaponItem
+
 if TYPE_CHECKING:
     from engine import Engine
     from entity import Entity
@@ -138,4 +140,15 @@ class BasicAttackAction(Action):
             dmg = self.entity.fighter.basic_attack(target)
             #print(f'{self.entity.name} attacks {display_name} for {dmg}')
 
+        EndTurnAction(self.entity).perform()
+
+
+class WeaponAttack(Action):
+    def __init__(self, entity: Entity, other_entities: list[Entity], weapon: WeaponItem) -> None:
+        super().__init__(entity=entity)
+        self.other_entities = other_entities
+        self.weapon = weapon
+
+    def perform(self) -> None:
+        
         EndTurnAction(self.entity).perform()

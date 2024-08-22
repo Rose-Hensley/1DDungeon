@@ -41,6 +41,10 @@ SWITCH_TARGET_KEYS = [
     tcod.event.KeySym.TAB
 ]
 
+SHOOT_KEYS = [
+    tcod.event.KeySym.w
+]
+
 
 class EventHandler(tcod.event.EventDispatch[Action]):
     def __init__(self, engine: Engine):

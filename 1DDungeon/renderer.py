@@ -122,7 +122,7 @@ class GameRenderer(Renderer):
         # drawing list of menus to navigate to
         console.print_box(x=sheet_x+1,y=sheet_y+7,
             width=sheet_width, height=sheet_height,
-            string=f"""Bulk:{player_fighter.bulk}  Cunning:{player_fighter.cunning}  Magic:{player_fighter.magic}  Luck:{player_fighter.luck}
+            string=f"""Bulk:{player_fighter.bulk}  Nimble:{player_fighter.nimble}  Magic:{player_fighter.magic}  Luck:{player_fighter.luck}
 
 AC:{player_fighter.armor} EV:{player_fighter.evasion}
 
@@ -166,7 +166,7 @@ TAB - Switch target""")
             # drawing list of menus to navigate to
             console.print_box(x=sheet_x+1,y=sheet_y+7,
                 width=sheet_width, height=sheet_height,
-                string=f"""Blk:{entity_fighter.bulk} Cun:{entity_fighter.cunning} Mag:{entity_fighter.magic} Lck:{entity_fighter.luck}
+                string=f"""Blk:{entity_fighter.bulk} Cun:{entity_fighter.nimble} Mag:{entity_fighter.magic} Lck:{entity_fighter.luck}
 AC:{entity_fighter.armor} EV:{entity_fighter.evasion}
 Basic Attack (2d{entity_fighter.basic_dmg})""")
 

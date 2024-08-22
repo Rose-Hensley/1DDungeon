@@ -6,6 +6,9 @@ from component.fighter import Fighter
 from component.playable_species import Species
 from include import constants
 
+if TYPE_CHECKING:
+    from inventory_item import InventoryItem
+
 # Player fighter who is able to level up
 class PlayerFighter(Fighter):
     def __init__(
@@ -14,17 +17,18 @@ class PlayerFighter(Fighter):
         mp_max: int = 0, mp: int | None = None, 
         xp: int = 0, xp_to_next: int = 0,
         armor: int = 0, evasion: int = 0,
-        bulk: int = 0, cunning: int = 0, magic: int = 0, luck: int = 0,
+        bulk: int = 0, nimble: int = 0, magic: int = 0, luck: int = 0,
         hp_regen: int = 0, mp_regen: int = 0,
         basic_dmg: int = 0, level: int = 1,
         species: Species = Species(0),
+        inventory: List[InventoryItem] = [],
     ):
         super().__init__(
             hp_max=hp_max, hp=hp,
             mp_max=mp_max, mp=mp,
             xp=xp,
             armor=armor, evasion=evasion,
-            bulk=bulk, cunning=cunning, magic=magic, luck=luck,
+            bulk=bulk, nimble=nimble, magic=magic, luck=luck,
             hp_regen=hp_regen, mp_regen=mp_regen,
             basic_dmg=basic_dmg,
         )
@@ -41,7 +45,7 @@ class PlayerFighter(Fighter):
         self.hp = self.hp_max if self.hp > self.hp_max else self.hp
 
         # Calcing evasion
-        self.evasion = self.cunning * 3 + self.luck * 3
+        self.evasion = self.nimble * 3 + self.luck * 3
 
     # returns a message about you leveling up or None if no level up happened
     def gain_xp(self, xp:int) -> str | None:
