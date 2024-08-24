@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 from typing import Optional, Tuple, TYPE_CHECKING
+import random
 
 from include import color
 
 from component.inventory_item import WeaponItem
+from component.entity import GoldPickup
 
 if TYPE_CHECKING:
     from engine import Engine
@@ -100,6 +102,14 @@ class DieAction(Action):
             if msg != None:
                 print(msg)
 
+            # drop gold if carrying any
+            if self.entity.fighter.gold > 0:
+                Action.engine.gamemap.entities.append(
+                    GoldPickup(
+                        x=self.entity.x, y=self.entity.y, gold_amount=self.entity.fighter.gold
+                    )
+                )
+
 
 class EndTurnAction(Action):
     def perform(self) -> None:
@@ -150,5 +160,24 @@ class WeaponAttack(Action):
         self.weapon = weapon
 
     def perform(self) -> None:
-        
+        if not self.other_entities:
+            print('No target to attack!')
+            EndTurnAction(self.entity).perform()
+            return
+
+        for entity in self.other_entities:
+            hit_roll = 100 - entity.fighter.evasion
+            if random.randint(0, 99) >= hit_roll and entity.is_alive():
+                self.weapon.on_miss(attacker=self.entity.fighter, target=entity.fighter)
+
+            elif entity.is_alive():
+                dmg_roll, dmg_type = self.weapon.get_damage_roll()
+                entity.fighter.take_dmg(dmg_roll)
+                self.weapon.on_hit(attacker=self.entity.fighter, target=entity.fighter)
+                if not entity.is_alive():
+                    self.weapon.on_kill(attacker=self.entity.fighter, target=entity.fighter)
+
+            else:
+                print('Attacking a not alive target')
+
         EndTurnAction(self.entity).perform()

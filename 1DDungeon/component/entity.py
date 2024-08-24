@@ -44,6 +44,10 @@ class Entity:
         self.x += dx
         self.y += dy
 
+    def set_pos(self, x: int, y: int) -> None:
+        self.x = x
+        self.y = y
+
     def spawn(self: T, gamemap: GameMap, x: int, y: int) -> T:
         """Spawn a copy of this instance at the given location."""
         clone = copy.deepcopy(self)

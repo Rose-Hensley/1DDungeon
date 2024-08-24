@@ -5,11 +5,12 @@ from typing import List, Tuple, TYPE_CHECKING
 from component.fighter import Fighter
 from component.playable_species import Species
 from include import constants
+from component.inventory_item import WeaponItem
 
 if TYPE_CHECKING:
     from inventory_item import InventoryItem
 
-# Player fighter who is able to level up
+# Player fighter who is able to level up and has an inventory
 class PlayerFighter(Fighter):
     def __init__(
         self,
@@ -22,6 +23,7 @@ class PlayerFighter(Fighter):
         basic_dmg: int = 0, level: int = 1,
         species: Species = Species(0),
         inventory: List[InventoryItem] = [],
+        weapon_equipped: WeaponItem = WeaponItem(),
     ):
         super().__init__(
             hp_max=hp_max, hp=hp,
@@ -31,6 +33,7 @@ class PlayerFighter(Fighter):
             bulk=bulk, nimble=nimble, magic=magic, luck=luck,
             hp_regen=hp_regen, mp_regen=mp_regen,
             basic_dmg=basic_dmg,
+            weapon_equipped=weapon_equipped,
         )
         self.xp_to_next = xp_to_next
         self.level = level

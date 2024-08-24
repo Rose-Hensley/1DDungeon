@@ -69,7 +69,7 @@ class GameRenderer(Renderer):
             y=game_map_y,
             width=self.gamemap.width+2, height=self.gamemap.height+2,
             decoration='┌─┐│.│└─┘',
-            title='Floor 1', title_color=color.white
+            title=f'{self.gamemap.name} {self.gamemap.floor}', title_color=color.white
         )
 
         # drawing targeted tiles

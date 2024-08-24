@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 import random
 
+import item_factory
 from component.actor import Actor
 from component.ai import *
 from component.fighter import Fighter
@@ -22,8 +23,10 @@ player = Actor(
         armor=1, evasion=10,
         hp_regen=1, mp_regen=1,
         basic_dmg=4, xp_to_next=2,
-        bulk=2,nimble=4,magic=5,luck=4
+        bulk=2,nimble=4,magic=5,luck=4,
+        weapon_equipped=item_factory.basic_bow.create_item(),
     ),
+    
 )
 
 zombie = Actor(
@@ -33,7 +36,7 @@ zombie = Actor(
     ai=SimpleMeleeHostileEnemy(),
     fighter=Fighter(
         hp_max=random.randint(7,10),
-        hp_regen=1, basic_dmg=3, xp=1,
+        hp_regen=1, basic_dmg=3, xp=1, cr=1,
     ),
 )
 
@@ -44,8 +47,11 @@ zombie_carrier = Actor(
     ai=SimpleMeleeHostileEnemy(),
     fighter=Fighter(
         hp_max=random.randint(13,15),
-        hp_regen=1, basic_dmg=4, xp=2,
+        hp_regen=1, basic_dmg=4, xp=2, gold=2, cr=2,
     ),
 )
 
-
+enemy_map = {
+    1: zombie,
+    2: zombie_carrier,
+}

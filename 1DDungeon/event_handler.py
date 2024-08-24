@@ -6,6 +6,8 @@ import tcod.event
 from tcod import context
 from action import *
 
+from item_factory import basic_bow
+
 if TYPE_CHECKING:
     from engine import Engine
     
@@ -100,6 +102,13 @@ class MainGameHandler(EventHandler):
 
         elif key in GRAB_KEYS:
             action = GrabAction(entity=player)
+
+        elif key in SHOOT_KEYS:
+            action = WeaponAttack(
+                entity=player,
+                other_entities=self.engine.gamemap.target_entities,
+                weapon=player.fighter.weapon_equipped
+            )
 
         # No valid key was pressed
         return action

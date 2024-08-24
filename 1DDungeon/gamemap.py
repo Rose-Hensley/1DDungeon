@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Iterable, Iterator, Optional, TYPE_CHECKING
 
+import include.constants
+
 if TYPE_CHECKING:
     from component.entity import Entity
 
@@ -10,12 +12,16 @@ class GameMap:
         player: Actor,
         width: int,
         height: int = 1,
+        name: str = '<Unnamed>',
+        floor: int = 0,
         entities: Iterable[Entity] = [],
         target_tiles: list[Entity] = [],
     ):
         self._width, self._height = width, height
         self.entities = entities
         self.player = player
+        self.name = name
+        self.floor = floor
         self.target_entities = []
 
     @property
@@ -27,7 +33,7 @@ class GameMap:
         return self._height
 
     def generate_floor(self):
-        pass
+        raise NotImplementedError()
 
     # returns whether the given space is in bounds or not
     def inbounds(self, x: int, y: int) -> bool:
@@ -60,3 +66,15 @@ class GameMap:
             else:
                 return actor
         return None
+
+
+class CityOutskirtsMap:
+    def generate_floor(self):
+        # Resetting the entities list
+        self.entities.clear()
+        self.entities.append(self.player)
+        self.player.set_pos(0,0)
+
+        # Incrementing floor and calculating cr rating for the level
+        self.floor += 1
+        max_cr = constants.city_outskirt_cr + int(self.floor / 2)

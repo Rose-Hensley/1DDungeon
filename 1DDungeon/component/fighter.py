@@ -4,8 +4,11 @@ from typing import TYPE_CHECKING
 
 import random
 
+from component.inventory_item import WeaponItem
+
 if TYPE_CHECKING:
     from entity import Actor
+    
 
 class Fighter:
 
@@ -20,7 +23,9 @@ class Fighter:
         bulk: int = 0, nimble: int = 0, magic: int = 0, luck: int = 0,
         hp_regen: int = 0, mp_regen: int = 0,
         basic_dmg: int = 0, 
+        weapon_equipped: WeaponItem = WeaponItem(),
         gold: int = 0,
+        cr: int = 0,
     ):
         self.hp = hp_max if hp == None else hp
         self.hp_max = hp_max
@@ -37,6 +42,8 @@ class Fighter:
         self.magic = magic
         self.luck = luck
         self.gold = gold
+        self.weapon_equipped = weapon_equipped
+        self.cr = cr
 
     # returns the actual amount of damage taken
     def take_dmg(self, dmg: int) -> int:
