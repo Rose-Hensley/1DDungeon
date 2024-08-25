@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 from typing import Iterable, Iterator, Optional, TYPE_CHECKING
+from random import shuffle
 
-import include.constants
+from include import constants
+import entity_factory
 
 if TYPE_CHECKING:
     from component.entity import Entity
@@ -14,6 +16,7 @@ class GameMap:
         height: int = 1,
         name: str = '<Unnamed>',
         floor: int = 0,
+        map_cr: int = 0,
         entities: Iterable[Entity] = [],
         target_tiles: list[Entity] = [],
     ):
@@ -23,6 +26,8 @@ class GameMap:
         self.name = name
         self.floor = floor
         self.target_entities = []
+        self.map_cr = map_cr
+        self.init_gamemap()
 
     @property
     def width(self):
@@ -32,7 +37,41 @@ class GameMap:
     def height(self):
         return self._height
 
-    def generate_floor(self):
+    def generate_floor(self) -> None:
+        raise NotImplementedError()
+
+    def _generate_floor_helper(self, spawnable_entities: list[Entity]) -> None:
+        # Resetting the entities list
+        self.entities.clear()
+        self.entities.append(self.player)
+        self.player.set_pos(0,0)
+
+        # Incrementing floor and calculating cr rating for the level
+        self.floor += 1
+        max_cr = self.map_cr + int(self.floor / 2)
+
+        # Choosin enemies
+        curr_cr = max_cr
+        shuffle(spawnable_entities)
+        sorted_enemies = sorted(
+            spawnable_entities,
+            key=lambda e: e.fighter.cr,
+            reverse=True
+        )
+        placed = True
+        available_spaces = [i for i in range(3, self.width)]
+        while(placed):
+            placed = False
+            for enemy in sorted_enemies:
+                if enemy.fighter.cr <= curr_cr and available_spaces:
+                    placed = True
+                    curr_cr -= enemy.fighter.cr
+                    print(available_spaces)
+                    shuffle(available_spaces)
+                    enemy.spawn(gamemap=self,x=available_spaces.pop(),y=0)
+                    print(available_spaces)
+
+    def init_gamemap(self):
         raise NotImplementedError()
 
     # returns whether the given space is in bounds or not
@@ -67,14 +106,19 @@ class GameMap:
                 return actor
         return None
 
+    def in_combat(self) -> bool:
+        for a in self.actors:
+            if a.is_alive() and a.hostile:
+                return True
+        return False
 
-class CityOutskirtsMap:
+
+
+class CityOutskirtsMap(GameMap):
+    def init_gamemap(self):
+        self.name = 'City Outskirts'
+        self.map_cr = constants.city_outskirt_cr
+
+    # Increments the floor level by one each call
     def generate_floor(self):
-        # Resetting the entities list
-        self.entities.clear()
-        self.entities.append(self.player)
-        self.player.set_pos(0,0)
-
-        # Incrementing floor and calculating cr rating for the level
-        self.floor += 1
-        max_cr = constants.city_outskirt_cr + int(self.floor / 2)
+        self._generate_floor_helper(entity_factory.city_outskirts_enemies)

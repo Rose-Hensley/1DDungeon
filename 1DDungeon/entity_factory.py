@@ -47,11 +47,24 @@ zombie_carrier = Actor(
     ai=SimpleMeleeHostileEnemy(),
     fighter=Fighter(
         hp_max=random.randint(13,15),
-        hp_regen=1, basic_dmg=4, xp=2, gold=2, cr=2,
+        hp_regen=1, basic_dmg=4, xp=2, cr=2,
     ),
 )
 
-enemy_map = {
-    1: zombie,
-    2: zombie_carrier,
-}
+infected_survivor = Actor(
+    char='I',
+    color=color.infected_survivor_glyph,
+    name='Infected Survivor',
+    ai=SimpleMeleeHostileEnemy(),
+    fighter=Fighter(
+        hp_max=random.randint(18,20),
+        hp_regen=1, basic_dmg=5, xp=3, cr=3,
+        gold=random.randint(1,3),
+    )
+)
+
+city_outskirts_enemies = [
+    zombie,
+    zombie_carrier,
+    infected_survivor,
+]

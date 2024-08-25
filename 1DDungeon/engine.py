@@ -8,7 +8,7 @@ from event_handler import EventHandler, MainGameHandler, GameOverHandler
 from component import entity
 from tcod.console import Console
 from renderer import GameRenderer, GameOverRenderer
-from gamemap import GameMap
+from gamemap import CityOutskirtsMap
 from include import constants
 import entity_factory
 
@@ -17,7 +17,7 @@ class Engine:
         self.event_handler: EventHandler = MainGameHandler(self)
         self.renderer_list = []
         self.player = copy.deepcopy(entity_factory.player)
-        self.gamemap = GameMap(
+        self.gamemap = CityOutskirtsMap(
             width=constants.gamemap_width,
             height=constants.gamemap_height,
             entities=[self.player],
@@ -31,16 +31,16 @@ class Engine:
         # starting the render list
         self.renderer_list.append(GameRenderer(self.gamemap))
 
-        entity_factory.zombie_carrier.spawn(gamemap=self.gamemap, x=10, y=0)
-        entity_factory.zombie.spawn(gamemap=self.gamemap, x=5, y=0)
-        entity_factory.zombie.spawn(gamemap=self.gamemap, x=7, y=0)
+        # starting the first level
+        self.gamemap.generate_floor()
+
         self.gamemap.entities.append(entity.GoldPickup(x=3, y=0, gold_amount=15))
 
     def reset_game(self):
         self.renderer_list = []
         self.event_handler = MainGameHandler(self)
         self.player = copy.deepcopy(entity_factory.player)
-        self.gamemap = GameMap(
+        self.gamemap = CityOutskirtsMap(
             width=constants.gamemap_width,
             height=constants.gamemap_height,
             entities=[self.player],

@@ -1,7 +1,7 @@
 screen_width = 96
 screen_height = 50
 
-gamemap_width = 15
+gamemap_width = 12
 gamemap_height = 1
 
 xp_to_next_increment = 4

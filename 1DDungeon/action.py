@@ -13,6 +13,7 @@ if TYPE_CHECKING:
     from entity import Entity
     
 
+# Returns a delay to signify how long to action takes
 class Action:
     # Static engine variable that all action objects will share
     engine: Engine
@@ -29,6 +30,8 @@ class Action:
         `Action.engine` is the scope this action is being performed in.
 
         `self.entity` is the object performing the action.
+
+        returns the amount of time it takes to complete the action
 
         This method must be overridden by Action subclasses.
         """
@@ -56,7 +59,9 @@ class MovementAction(Action):
         self.dy = dy
 
     def perform(self) -> None:
-        if not Action.engine.gamemap.inbounds(self.entity.x + self.dx, self.entity.y + self.dy):
+        if self.entity.x + self.dx == Action.engine.gamemap.width:
+            MoveToNextLevelAction(self.entity).perform()
+        elif not Action.engine.gamemap.inbounds(self.entity.x + self.dx, self.entity.y + self.dy):
             print('You walk into a wall')
         elif Action.engine.gamemap.block_at(self.entity.x + self.dx, self.entity.y + self.dy):
             print('Something blocks your path!')
@@ -64,6 +69,15 @@ class MovementAction(Action):
             self.entity.move(self.dx, self.dy)
 
         EndTurnAction(self.entity).perform()
+
+
+class MoveToNextLevelAction(Action):
+    def gives_up_turn(self) -> bool:
+        return False
+
+    def perform(self) -> None:
+        if not Action.engine.gamemap.in_combat():
+            Action.engine.gamemap.generate_floor()
 
 
 class WaitAction(Action):
@@ -167,7 +181,10 @@ class WeaponAttack(Action):
 
         for entity in self.other_entities:
             hit_roll = 100 - entity.fighter.evasion
-            if random.randint(0, 99) >= hit_roll and entity.is_alive():
+            if abs(entity.x - self.entity.x) > self.weapon.target_range:
+                print('Enemy outside of range!')
+
+            elif random.randint(0, 99) >= hit_roll and entity.is_alive():
                 self.weapon.on_miss(attacker=self.entity.fighter, target=entity.fighter)
 
             elif entity.is_alive():

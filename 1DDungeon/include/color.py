@@ -28,3 +28,4 @@ gamemap_border = white
 character_sheet_border = player_glyph
 
 zombie_glyph = (87, 114, 35)
+infected_survivor_glyph = (104, 122, 70)

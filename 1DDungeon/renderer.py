@@ -68,7 +68,7 @@ class GameRenderer(Renderer):
             x=game_map_x,
             y=game_map_y,
             width=self.gamemap.width+2, height=self.gamemap.height+2,
-            decoration='┌─┐│.│└─┘',
+            decoration='┌─┐│.→└─┘',
             title=f'{self.gamemap.name} {self.gamemap.floor}', title_color=color.white
         )
 
