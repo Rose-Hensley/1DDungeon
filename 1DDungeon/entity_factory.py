@@ -24,7 +24,8 @@ player = Actor(
         hp_regen=1, mp_regen=1,
         basic_dmg=4, xp_to_next=2,
         bulk=2,nimble=4,magic=5,luck=4,
-        weapon_equipped=item_factory.basic_bow.create_item(),
+        weapon_equipped=item_factory.longbow.create_item(),
+        base_speed=.5,
     ),
     
 )
@@ -37,6 +38,7 @@ zombie = Actor(
     fighter=Fighter(
         hp_max=random.randint(7,10),
         hp_regen=1, basic_dmg=3, xp=1, cr=1,
+        base_speed=1,
     ),
 )
 

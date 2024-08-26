@@ -21,9 +21,10 @@ class PlayerFighter(Fighter):
         bulk: int = 0, nimble: int = 0, magic: int = 0, luck: int = 0,
         hp_regen: int = 0, mp_regen: int = 0,
         basic_dmg: int = 0, level: int = 1,
+        base_speed: float = 1.0,
         species: Species = Species(0),
         inventory: List[InventoryItem] = [],
-        weapon_equipped: WeaponItem = WeaponItem(),
+        weapon_equipped: WeaponItem | None = None,
     ):
         super().__init__(
             hp_max=hp_max, hp=hp,
@@ -32,7 +33,7 @@ class PlayerFighter(Fighter):
             armor=armor, evasion=evasion,
             bulk=bulk, nimble=nimble, magic=magic, luck=luck,
             hp_regen=hp_regen, mp_regen=mp_regen,
-            basic_dmg=basic_dmg,
+            basic_dmg=basic_dmg, base_speed=base_speed,
             weapon_equipped=weapon_equipped,
         )
         self.xp_to_next = xp_to_next

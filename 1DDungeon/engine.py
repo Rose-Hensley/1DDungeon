@@ -49,14 +49,34 @@ class Engine:
 
         self.engine_init()
 
+    """
+    def game_tick(self, console: Console, context: ) -> None:
+        self.render(console=console)
+        next_entity = self.engine.gamemap.get_next_turn_entity()
+        if next_entity == self.player:
+            self.event_handler.handle_events()
+        else:
+            self.handle_enemy_turn(entity=next_entity)
+    """
+
     def render(self, console: Console) -> None:
         for renderer in self.renderer_list:
             renderer.render(console)
 
     def handle_enemy_turns(self) -> None:
+        """
         for entity in set(self.gamemap.actors) - {self.player}:
             if entity.ai:
-                entity.ai.perform(self)
+                time_used = entity.ai.perform(self)
+                entity.increment_time_counter(time_used)"""
+
+        while(self.gamemap.in_combat() and (next_entity := self.gamemap.get_next_turn_entity()) != self.player):
+            time_used = self.handle_enemy_turn(next_entity)
+            next_entity.increment_time_counter(time_used)
+
+    def handle_enemy_turn(self, entitiy: entity.Entity) -> float:
+        if entitiy.ai:
+            return entitiy.ai.perform(self)
 
     def game_over_state(self) -> None:
         self.event_handler = GameOverHandler(engine=self)

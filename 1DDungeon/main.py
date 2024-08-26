@@ -21,6 +21,7 @@ def main():
             root_console = tcod.console.Console(constants.screen_width, constants.screen_height, order="F")
             while True:
                 root_console.clear()
+                
                 engine.render(console=root_console)
 
                 context.present(root_console)

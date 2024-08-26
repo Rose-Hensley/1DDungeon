@@ -6,6 +6,7 @@ import copy
 
 from include.weapon_attributes import WeaponAttribute
 from include.damage_types import DamageType
+from include import constants
 
 if TYPE_CHECKING:
     from fighter import Fighter
@@ -40,6 +41,7 @@ class WeaponItem(InventoryItem):
         name: str = '<Unnamed>',
         target_range: int = 1,
         base_dmg: int = 0,
+        base_speed: float = 1.0,
         base_dmg_type: DamageType = DamageType.SHARP,
         attributes: list[WeaponAttribute] = [],
     ):
@@ -48,9 +50,18 @@ class WeaponItem(InventoryItem):
         self.base_dmg = base_dmg
         self.base_dmg_type = base_dmg_type
         self.attributes = attributes
+        self._base_speed = base_speed
 
     def get_item_string(self) -> str:
         pass
+
+    @property
+    def base_speed(self):
+        return self._base_speed
+
+    @property
+    def max_speed(self):
+        return self.base_speed * constants.max_weapon_speed_coefficient
 
     def get_damage_roll(self) -> (int, DamageTypes):
         if self.base_dmg > 1:

@@ -45,6 +45,7 @@ class GameMap:
         self.entities.clear()
         self.entities.append(self.player)
         self.player.set_pos(0,0)
+        self.player.fighter.reset_time_counter()
 
         # Incrementing floor and calculating cr rating for the level
         self.floor += 1
@@ -66,10 +67,8 @@ class GameMap:
                 if enemy.fighter.cr <= curr_cr and available_spaces:
                     placed = True
                     curr_cr -= enemy.fighter.cr
-                    print(available_spaces)
                     shuffle(available_spaces)
                     enemy.spawn(gamemap=self,x=available_spaces.pop(),y=0)
-                    print(available_spaces)
 
     def init_gamemap(self):
         raise NotImplementedError()
@@ -107,11 +106,19 @@ class GameMap:
         return None
 
     def in_combat(self) -> bool:
+        if not self.player.is_alive():
+            return False
         for a in self.actors:
             if a.is_alive() and a.hostile:
                 return True
         return False
 
+    def get_next_turn_entity(self) -> Entity:
+        time_sorted = sorted(
+            self.actors,
+            key=lambda e: e.fighter.time_counter,
+        )
+        return time_sorted[0]
 
 
 class CityOutskirtsMap(GameMap):

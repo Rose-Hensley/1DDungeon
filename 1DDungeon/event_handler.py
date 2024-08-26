@@ -6,7 +6,7 @@ import tcod.event
 from tcod import context
 from action import *
 
-from item_factory import basic_bow
+import item_factory
 
 if TYPE_CHECKING:
     from engine import Engine
@@ -74,10 +74,12 @@ class MainGameHandler(EventHandler):
             action = self.dispatch(event)
             if action is None:
                 continue
-            action.perform()
+            
+            time_used = action.perform()
+            action.entity.increment_time_counter(time=time_used)
 
-            if action.gives_up_turn():
-                self.engine.handle_enemy_turns()
+            self.engine.handle_enemy_turns()
+
 
     def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[Action]:
         action: Optional[Action] = None

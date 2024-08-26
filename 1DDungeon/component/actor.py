@@ -51,3 +51,9 @@ class Actor(Entity):
     # returns a message about you leveling up or None if no level up happened
     def gain_xp(self, xp:int) -> str | None:
         return self.fighter.gain_xp(xp=xp)
+
+    def increment_time_counter(self, time: float) -> None:
+        self.fighter.time_counter += time
+
+    def reset_time_counter(self) -> None:
+        self.fighter.reset_time_counter()

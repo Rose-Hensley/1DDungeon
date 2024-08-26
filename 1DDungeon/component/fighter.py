@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 import random
 
 from component.inventory_item import WeaponItem
+from include import constants
 
 if TYPE_CHECKING:
     from entity import Actor
@@ -23,9 +24,11 @@ class Fighter:
         bulk: int = 0, nimble: int = 0, magic: int = 0, luck: int = 0,
         hp_regen: int = 0, mp_regen: int = 0,
         basic_dmg: int = 0, 
-        weapon_equipped: WeaponItem = WeaponItem(),
+        weapon_equipped: WeaponItem | None = None,
         gold: int = 0,
         cr: int = 0,
+        time_counter: float = 0.01,
+        base_speed: float = 1.00,
     ):
         self.hp = hp_max if hp == None else hp
         self.hp_max = hp_max
@@ -44,6 +47,8 @@ class Fighter:
         self.gold = gold
         self.weapon_equipped = weapon_equipped
         self.cr = cr
+        self.time_counter = time_counter
+        self.base_speed = base_speed
 
     # returns the actual amount of damage taken
     def take_dmg(self, dmg: int) -> int:
@@ -93,3 +98,15 @@ class Fighter:
         if self.actor.is_alive():
             self.gain_hp(hp=self.hp_regen)
             self.gain_mp(mp=self.mp_regen)
+
+    def reset_time_counter(self) -> None:
+        self.time_counter = 0.0
+
+    # Returns the amount of time taken to attack with the equipped weapon otherwise base_speed
+    def get_weapon_time(self) -> float:
+        if self.weapon_equipped == None:
+            return self.base_speed
+        return max(
+            self.weapon_equipped.max_speed,
+            self.weapon_equipped.base_speed - self.weapon_equipped.base_speed * constants.speed_decrease_each_point * (self.nimble + self.bulk)
+        )

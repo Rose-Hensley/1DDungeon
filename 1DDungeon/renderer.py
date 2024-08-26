@@ -129,6 +129,7 @@ AC:{player_fighter.armor} EV:{player_fighter.evasion}
 Gold:{player_fighter.gold}
 
 f - Basic Attack (2d{player_fighter.basic_dmg})
+Weapon Speed: {player_fighter.get_weapon_time()}
 TAB - Switch target""")
 
 
@@ -168,7 +169,8 @@ TAB - Switch target""")
                 width=sheet_width, height=sheet_height,
                 string=f"""Blk:{entity_fighter.bulk} Cun:{entity_fighter.nimble} Mag:{entity_fighter.magic} Lck:{entity_fighter.luck}
 AC:{entity_fighter.armor} EV:{entity_fighter.evasion}
-Basic Attack (2d{entity_fighter.basic_dmg})""")
+Basic Attack (2d{entity_fighter.basic_dmg})
+Weapon Speed: {entity_fighter.get_weapon_time()}""")
 
 
 class GameOverRenderer(Renderer):

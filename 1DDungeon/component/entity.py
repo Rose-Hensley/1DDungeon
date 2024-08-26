@@ -56,6 +56,12 @@ class Entity:
         gamemap.entities.append(clone)
         return clone
 
+    def increment_time_counter(self, time: float) -> None:
+        pass
+
+    def reset_time_counter(self) -> None:
+        pass
+
 
 # A type of entity with no AI that can be picked up
 class PickupEntity(Entity):
